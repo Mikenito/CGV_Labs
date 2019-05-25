@@ -17,7 +17,7 @@ var controls;  // An OrbitControls object that is used to implement
 var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
 
-var tempObject;  // A temporary animated object.  DELETE IT.
+var poles;  // A temporary animated object.  DELETE IT.
 var bottomCylinder;
 var topCylinder;
 
@@ -40,7 +40,7 @@ function createWorld() {
     // ------------------- Make a camera with viewpoint light ----------------------
     
     camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 100);
-    camera.position.z = 50;
+    camera.position.z = 20;
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight(0xff6666,0.3);
     light.position.set(0,0,1);
@@ -61,23 +61,93 @@ function createWorld() {
     scene.add(torch2);
     
     //------------------- Create the scene's visible objects ----------------------
+    maryGoRoundStand();
+    
+} // end function createWorld()
+
+//Create the stand
+function maryGoRoundStand(){
+    //Bottom Cylinder
     bottomCylinder = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.5,0.5,1,32,1),
-    );
-    tempObject =  new THREE.Mesh(  // DELETE THIS !
-        new THREE.CubeGeometry(10,1,10,2),
+        new THREE.CylinderGeometry(2,2,0.1,100,1),
         new THREE.MeshPhongMaterial({
-            color: 0x66BBFF,
+            color: "purple",
             specular: 0x222222,
             shininess: 16,
             shading: THREE.FlatShading
         })
     );
-    tempObject.rotation.y = Math.PI/12;
-    scene.add(tempObject);
+    bottomCylinder.scale.set(3,3,3);
+    // bottomCylinder.rotation.x = Math.PI/50;
+    // bottomCylinder.rotation.z = Math.PI/50;
+    bottomCylinder.position.set(0,-3,0);
+    scene.add(bottomCylinder);
+    //end of bottom cylinder
     
-} // end function createWorld()
+    //top cylinder
+    topCylinder = new THREE.Mesh(
+        new THREE.CylinderGeometry(2,2,0.1,100,1),
+        new THREE.MeshPhongMaterial({
+            color: "purple",
+            specular: 0x222222,
+            shininess: 16,
+            shading: THREE.FlatShading
+        })
+    );
+    topCylinder.scale.set(3,3,3);
+    // topCylinder.rotation.x = Math.PI/50;
+    // topCylinder.rotation.z = Math.PI/50;
+    topCylinder.position.set(0,3,0);
+    scene.add(topCylinder);
+    //end of top cylinder
 
+    //Vertical Poles
+    for(var i =1;i<=6;i++){
+        poles =  new THREE.Mesh(  // DELETE THIS !
+        new THREE.CylinderGeometry(0.2,0.2,6,100,1),
+        new THREE.MeshPhongMaterial({
+            color: "gold",
+            specular: 0x222222,
+            shininess: 16,
+            shading: THREE.FlatShading
+            })
+        );
+        // poles.rotation.x = Math.PI/50;
+        // poles.rotation.z = Math.PI/50;
+        switch(i){
+            case 1: 
+                //right pole
+                poles.position.set(5,0,0);
+                scene.add(poles);
+            break;
+            case 2:
+                //left pole
+                poles.position.set(3,0,4);
+                scene.add(poles);
+            break;
+            case 3:
+                //front pole
+                poles.position.set(-3,0,4);
+                scene.add(poles);
+            break;
+            case 4:
+                //back pole
+                poles.position.set(-5,0,0);
+                scene.add(poles);
+            break;
+            case 5:
+                //back pole
+                poles.position.set(-3,0,-4);
+                scene.add(poles);
+            break;
+            case 6:
+                //back pole
+                poles.position.set(3,0,-4);
+                scene.add(poles);
+            break;
+        }
+    }
+}
 
 /**
  *  This function is called once for each frame of the animation, before
@@ -87,14 +157,15 @@ function createWorld() {
  */
 function updateForFrame() {
     
-    // Update size and rotation of tempObject.  DELETE THIS!
+    // Update size and rotation of poles.  DELETE THIS!
     var loopFrame = frameNumber % 240;
     if (loopFrame > 120) {
         loopFrame = 240 - loopFrame;
     }
     var scaleFactor = 1 + loopFrame/120;
-    // tempObject.scale.set(scaleFactor,scaleFactor,scaleFactor);
-    tempObject.rotation.y += 0.01;
+    // poles.scale.set(scaleFactor,scaleFactor,scaleFactor);
+    poles.rotation.y += 0.01;
+    bottomCylinder.rotation.y += 0.01;
     
 }
 
