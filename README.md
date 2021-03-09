@@ -14,4 +14,4 @@ Lab 5:
 
 Lab 6:
 
-Lab 9: Required to create a Mary Go Round with Horses Attached
+Lab 9: Required to create a Carousel
